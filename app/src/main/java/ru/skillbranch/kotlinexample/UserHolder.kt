@@ -10,16 +10,13 @@ object UserHolder {
         fullName: String,
         email: String,
         password: String
-    ) : User = User.makeUser(fullName = fullName, email = email, password = password)
-        .also { user ->
-            if (email.isNotBlank()) {
-                if (map.keys.contains(email.toLowerCase(Locale.ROOT))) {
-                    throw IllegalArgumentException("A user with this email already exists")
-                } else {
-                    map[user.login] = user
-                }
+    ) : User {
+        return User.makeUser(fullName, email = email, password = password)
+            .also { user ->
+                if (map[user.login] == null) map[user.login] = user
+                else throw IllegalArgumentException("A user with this email already exists")
             }
-        }
+    }
 
     fun loginUser(login: String, password: String) : String? =
         map[login.replace("""[^+\d]""".toRegex(), "").trim()]?.let {
