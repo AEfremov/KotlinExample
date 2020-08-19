@@ -14,6 +14,7 @@ class User private constructor(
     rawPhone: String? = null,
     meta: Map<String, Any>? = null
 ) {
+
     val userInfo: String
 
     private val fullName: String
